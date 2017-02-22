@@ -1,0 +1,138 @@
+<!-- JQUERY SCRIPTS -->
+<script src="assets/js/jquery-1.10.2.js"></script>
+<!-- BOOTSTRAP SCRIPTS -->
+<script src="assets/js/bootstrap.min.js"></script>
+<!-- DATA TABLES -->
+<script src="assets/js/dataTables/jquery.dataTables.js"></script>
+<script src="assets/js/dataTables/dataTables.bootstrap.js"></script>
+<script src="assets/js/bootstrap-datepicker.js"></script>
+<script src="assets/js/prettify.js"></script>
+<script src="assets/js/bootstrap-datetimepicker.min.js"></script>
+<script>
+    //Data Table
+        $('.linkrow').on('click', function() {
+            window.document.location = $(this).data("href");
+        });
+
+        //Toggle reply collapse
+        $('#doCollapse').on('click', function() {
+            $('#reply').collapse('toggle')
+            $('#reply').on('show.bs.collapse', function() {
+                $('#collapseicon').removeClass('fa-plus').addClass('fa-minus');
+            })
+            $('#reply').on('hide.bs.collapse', function() {
+                $('#collapseicon').removeClass('fa-minus').addClass('fa-plus');
+            })
+        });
+
+        //Bootstrap Data Table
+        $('#dtable').DataTable({
+            "oLanguage": {
+                "sEmptyTable":     "No Records Found",
+                "sInfo":           "Showing _START_ to _END_ of _TOTAL_ entries",
+                "sInfoEmpty":      "Showing 0 to 0 of 0 entries",
+                "sInfoFiltered":   "(filtered from _MAX_ total entries)",
+                "sInfoPostFix":    "",
+                "sInfoThousands":  ",",
+                "sLengthMenu":     "Show _MENU_ entries",
+                "sLoadingRecords": "Loading...",
+                "sProcessing":     "Processing...",
+                "sSearch":         "<strong>Search: </strong>",
+                "sZeroRecords":    "No Records Found",
+                "oPaginate": {
+                    "sFirst":    "First",
+                    "sLast":     "Last",
+                    "sNext":     "Next",
+                    "sPrevious": "Previous"
+                }
+            },
+            "pageLength": 10,
+            "order": [
+                [ 0, "asc" ]
+            ],
+            "lengthMenu": [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"]
+            ],        "stateSave": true
+        });
+
+        $(".dataTables_filter input")
+            .attr("placeholder", "Enter search term...")
+            .attr("size", "50");
+
+            // highlight remembered filter on page re-load
+        var rememberedFilterTerm = table.state().columns[2].search.search;
+        if (rememberedFilterTerm) {
+            $(".view-filter-btns a span").each(function(index) {
+                if ($(this).text().trim() == rememberedFilterTerm) {
+                    $(this).parent('a').addClass('active');
+                    $(this).parent('a').find('i').switchClass('fa-circle-o', 'fa-dot-circle-o', 0);
+                }
+            });
+        }
+
+        //End Bootstrap Data Table
+        
+</script>
+<script>
+    $(function() {
+        window.prettyPrint && prettyPrint();
+        
+        //Date of Birth Date Picker
+        var dob = $('#dob').datepicker();
+        
+        dob.on('changeDate', function() {
+            $(this).datepicker('hide');
+        })
+        
+        //Time Timepicker
+        $('.time').datetimepicker({
+            language:  'en',
+            weekStart: 1,
+            todayBtn:  1,
+            autoclose: 1,
+            todayHighlight: 1,
+            startView: 1,
+            minView: 0,
+            maxView: 1,
+            forceParse: 0
+        });
+        
+        //Get LGA
+        var $state = $('#txtstate');
+        var $lga = $('#sellga'),
+            $crno = $('#crnos'),
+            $suspanel = $('.suspanel');
+        
+        $suspanel.addClass('hidden');
+        
+        $state.on('change', function() {
+            $.post('get_lgas.php', { state: $state.val() }, function(data) {
+                $lga.html(data);
+            })
+        })
+        
+        $crno.on('change', function() {
+            $.post('validate_crno.php', { crno: $crno.val() }, function(data) {
+                
+                if(data == "valid") {
+                    $('#errMsg').html('');
+                    $suspanel.removeClass('hidden');
+                } else {
+                    $('#errMsg').html(data);
+                    $suspanel.addClass('hidden');
+                }
+            })
+        })
+    })
+</script>
+<!-- METISMENU SCRIPTS -->
+<script src="assets/js/jquery.metisMenu.js"></script>
+<!-- MORRIS CHART SCRIPTS -->
+<script src="assets/js/morris/raphael-2.1.0.min.js"></script>
+<script src="assets/js/morris/morris.js"></script>
+<!-- CUSTOM SCRIPTS -->
+<script src="assets/js/custom.js"></script>
+<script type="text/javascript" src="assets/js/Chart.min.js"></script>
+<script type="text/javascript" src="assets/js/Chart.js"></script>
+<script type="text/javascript" src="assets/js/app.js"></script>
